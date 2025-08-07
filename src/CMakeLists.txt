@@ -77,9 +77,9 @@ foreach(lib IN LISTS clib_config clib_epaper clib_fonts clib_gui)
     )
 endforeach()
 
-add_library(lib_Gui Gui.cpp)
-target_link_libraries(lib_Gui
-    clib_gui
+add_library(Gui Gui.cpp)
+target_link_libraries(Gui
+    ${clib_gui}
 )
 
 add_executable(main main.cpp)
@@ -89,7 +89,7 @@ target_link_libraries(main
         ${clib_config}
         ${clib_epaper}
         ${clib_fonts}
-        ${clib_gui}
+        Gui
         lgpio
         m
 )
