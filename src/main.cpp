@@ -22,9 +22,9 @@ int main(void) {
     UWORD Imagesize = (EPD_4IN2_V2_WIDTH / 8) * EPD_4IN2_V2_HEIGHT;
     UBYTE *BlackImage = (UBYTE *)malloc(Imagesize);
 
-    Paint_NewImage(BlackImage, EPD_4IN2_V2_WIDTH, EPD_4IN2_V2_HEIGHT, 0, WHITE);
-    Paint_SetScale(2); // Monochrome
-    Paint_Clear(WHITE);
+    Paint_NewImage(&testPaint, BlackImage, EPD_4IN2_V2_WIDTH, EPD_4IN2_V2_HEIGHT, 0, WHITE);
+    Paint_SetScale(&testPaint, 2); // Monochrome
+    Paint_Clear(&testPaint, WHITE);
     EPD_4IN2_V2_Display(BlackImage);  // Full clear once
 
     /*for (int i = 0; i < sizeof(lyrics)/sizeof(lyrics[0]); i+=2) {
@@ -50,8 +50,8 @@ int main(void) {
         //EPD_4IN2_V2_PartialDisplay(BlackImage, 10, 120, 280, 50);
         
     }*/
-    Paint_ClearWindows(10, 120, 400, 192, WHITE);
-    Paint_DrawString_EN(10, 130, "Hello world!", &Font24, WHITE, BLACK);
+    Paint_ClearWindows(&testPaint, 10, 120, 400, 192, WHITE);
+    Paint_DrawString_EN(&testPaint, 10, 130, "Hello world!", &Font24, WHITE, BLACK);
     EPD_4IN2_V2_Display(BlackImage);
     EPD_4IN2_V2_Sleep();
     free(BlackImage);
