@@ -2,6 +2,8 @@
 #include <csignal>
 #include <cstring>
 
+#include "Gui.hpp"
+
 extern "C"{
     #include "DEV_Config.h"
     #include "GUI_Paint.h"
@@ -11,10 +13,11 @@ extern "C"{
     #include "EPD_4in2_V2.h"
 }
 
-
 int main(void) {
     DEV_Module_Init();
     EPD_4IN2_V2_Init();  // 1-bit BW mode
+
+    PAINT testPaint;
 
     UWORD Imagesize = (EPD_4IN2_V2_WIDTH / 8) * EPD_4IN2_V2_HEIGHT;
     UBYTE *BlackImage = (UBYTE *)malloc(Imagesize);
@@ -24,20 +27,7 @@ int main(void) {
     Paint_Clear(WHITE);
     EPD_4IN2_V2_Display(BlackImage);  // Full clear once
 
-    const char* lyrics[] = {
-        "now that you're mine",
-        " ",
-        "we'll find a way",
-        "of chasing the sun",
-        "let me be the one",
-        "who shines with you",
-        "in the morning",
-        "we don't know what to do"
-    };
-
-    char dummy = ' ';
-
-    for (int i = 0; i < sizeof(lyrics)/sizeof(lyrics[0]); i+=2) {
+    /*for (int i = 0; i < sizeof(lyrics)/sizeof(lyrics[0]); i+=2) {
         // Clear just the region
         Paint_ClearWindows(10, 120, 400, 192, WHITE);
 
@@ -59,8 +49,10 @@ int main(void) {
         }
         //EPD_4IN2_V2_PartialDisplay(BlackImage, 10, 120, 280, 50);
         
-    }
-
+    }*/
+    Paint_ClearWindows(10, 120, 400, 192, WHITE);
+    Paint_DrawString_EN(10, 130, "Hello world!", &Font24, WHITE, BLACK);
+    EPD_4IN2_V2_Display(BlackImage);
     EPD_4IN2_V2_Sleep();
     free(BlackImage);
     DEV_Module_Exit();

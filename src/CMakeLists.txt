@@ -3,6 +3,8 @@ include_directories(
     ${CMAKE_SOURCE_DIR}/inc/clib/e-Paper
     ${CMAKE_SOURCE_DIR}/inc/clib/Fonts
     ${CMAKE_SOURCE_DIR}/inc/clib/GUI
+    # Cpp wrappers
+    ${CMAKE_SOURCE_DIR}/inc/
 )
 
 # clib source files for Config
@@ -74,6 +76,11 @@ foreach(lib IN LISTS clib_config clib_epaper clib_fonts clib_gui)
             -Wall
     )
 endforeach()
+
+add_library(lib_Gui Gui.cpp)
+target_link_libraries(lib_Gui
+    clib_gui
+)
 
 add_executable(main main.cpp)
 
