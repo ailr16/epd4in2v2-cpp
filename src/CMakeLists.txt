@@ -58,6 +58,23 @@ set(clib_gui
 )
 
 
+foreach(lib IN LISTS clib_config clib_epaper clib_fonts clib_gui)
+    target_compile_definitions(${lib}
+        PRIVATE
+            USE_LGPIO_LIB
+            RPI
+            DEBUG
+    )
+    target_compile_options(${lib}
+        PRIVATE
+            -g
+            -O
+            -ffunction-sections
+            -fdata-sections
+            -Wall
+    )
+endforeach()
+
 add_executable(main main.cpp)
 
 target_link_libraries(main
@@ -66,4 +83,22 @@ target_link_libraries(main
         ${clib_epaper}
         ${clib_fonts}
         ${clib_gui}
+        lgpio
+        m
+)
+
+target_compile_definitions(main
+    PRIVATE
+        USE_LGPIO_LIB
+        RPI
+        DEBUG
+)
+
+target_compile_options(main
+    PRIVATE
+        -g
+        -O
+        -ffunction-sections
+        -fdata-sections
+        -Wall
 )
