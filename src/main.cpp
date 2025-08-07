@@ -1,8 +1,8 @@
-extern "C"{
-    #include <stdlib.h>     //exit()
-    #include <signal.h>     //signal()
-    #include <string.h>
+#include <cstdlib>
+#include <csignal>
+#include <cstring>
 
+extern "C"{
     #include "DEV_Config.h"
     #include "GUI_Paint.h"
     #include "GUI_BMPfile.h"
