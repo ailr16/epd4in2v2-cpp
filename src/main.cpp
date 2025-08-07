@@ -1,28 +1,18 @@
-#include <stdlib.h>     //exit()
-#include <signal.h>     //signal()
-#include <string.h>
+#include <cstdlib>
+#include <csignal>
+#include <cstring>
 
-#include "DEV_Config.h"
-#include "GUI_Paint.h"
-#include "GUI_BMPfile.h"
-#include "Debug.h"
-#include <stdlib.h> // malloc() free()
-#include "EPD_4in2_V2.h"
-
-void Handler(int signo)
-{
-    //System Exit
-    printf("\r\nHandler:exit\r\n");
-    DEV_Module_Exit();
-
-    exit(0);
+extern "C"{
+    #include "DEV_Config.h"
+    #include "GUI_Paint.h"
+    #include "GUI_BMPfile.h"
+    #include "Debug.h"
+    #include <stdlib.h> // malloc() free()
+    #include "EPD_4in2_V2.h"
 }
 
-int main(void)
-{
-    // Exception handling:ctrl + c
-    signal(SIGINT, Handler);
-    
+
+int main(void) {
     DEV_Module_Init();
     EPD_4IN2_V2_Init();  // 1-bit BW mode
 
