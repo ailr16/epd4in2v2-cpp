@@ -1,23 +1,45 @@
 #include "Gui.hpp"
 
 namespace Gui{
-    void Screen::newImage(UBYTE *image, UWORD width, UWORD height, UWORD rotate, UWORD color){
+    void Screen::newImage(uint8_t *image, uint16_t width, uint16_t height, uint16_t rotate, uint16_t color){
         Paint_NewImage(&this->screenHandler, image, width, height, rotate, color);
     }
 
-    void Screen::setScale(UBYTE scale){
-        Paint_SetScale(&this->screenHandler, scale);
+    void Screen::selectImage(uint8_t *image){
+        Paint_SelectImage(&this->screenHandler, image);
     }
 
-    void Screen::clear(UWORD color){
+    void Screen::setRotate(uint16_t rotate){
+        Paint_SetRotate(&this->screenHandler, rotate);
+    }
+
+    void Screen::setMirroring(uint8_t mirror){
+        Paint_SetMirroring(&this->screenHandler, mirror);
+    }
+
+    void Screen::setPixel(uint16_t x_position, uint16_t y_position, uint16_t color){
+        Paint_SetPixel(&this->screenHandler, x_position, y_position, color);
+    }
+
+    void Screen::setScale(uint8_t scale){
+        if(scale == 2 || scale == 4){
+            Paint_SetScale(&this->screenHandler, scale);
+        }
+    }
+
+    void Screen::clear(uint16_t color){
         Paint_Clear(&this->screenHandler, color);
     }
 
-    void Screen::clearWindow(UWORD x_start, UWORD y_start, UWORD x_end, UWORD y_end, UWORD color){
+    void Screen::clearWindow(uint16_t x_start, uint16_t y_start, uint16_t x_end, uint16_t y_end, uint16_t color){
         Paint_ClearWindows(&this->screenHandler, x_start, y_start, x_end, y_end, color);
     }
 
-    void Screen::drawString(UWORD x_start, UWORD y_start, const char * pString, sFONT* font, UWORD color_foreground, UWORD color_background){
+    void Screen::drawDot(uint16_t x_position, uint16_t y_position, uint16_t color, uint8_t dot_size, uint8_t dot_style){
+        Paint_DrawPoint(&this->screenHandler, x_position, y_position, color, static_cast<DOT_PIXEL>(dot_size), static_cast<DOT_STYLE>(dot_style));
+    }
+
+    void Screen::drawString(uint16_t x_start, uint16_t y_start, const char * pString, sFONT* font, uint16_t color_foreground, uint16_t color_background){
         Paint_DrawString_EN(&this->screenHandler, x_start, y_start, pString, font, color_foreground, color_background);
     }
 
@@ -25,15 +47,15 @@ namespace Gui{
         unsigned char opStatus = 1;
 
         switch(read_mode){
-            case Gui::Bmp::MONOCHROME:
+            case Gui::BmpReadMode::MONOCHROME:
                 opStatus = GUI_ReadBmp(&targetScreen.screenHandler, path.c_str(), x_start, y_start);
                 break;
 
-            case Gui::Bmp::GRAY_4:
+            case Gui::BmpReadMode::GRAY_4:
                 opStatus = GUI_ReadBmp_4Gray(&targetScreen.screenHandler, path.c_str(), x_start, y_start);
                 break;
 
-            case Gui::Bmp::GRAY_16:
+            case Gui::BmpReadMode::GRAY_16:
                 opStatus = GUI_ReadBmp_16Gray(&targetScreen.screenHandler, path.c_str(), x_start, y_start);
                 break;
                 

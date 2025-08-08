@@ -21,12 +21,10 @@ int main(void) {
     UBYTE *BlackImage = (UBYTE *)malloc(Imagesize);
 
     Gui::Screen testScreen;
+    Gui::Bmp bmpImage;
 
-    //Paint_NewImage(&testPaint, BlackImage, EPD_4IN2_V2_WIDTH, EPD_4IN2_V2_HEIGHT, 0, WHITE);
     testScreen.newImage(BlackImage, EPD_4IN2_V2_WIDTH, EPD_4IN2_V2_HEIGHT, 0, WHITE);
-    //Paint_SetScale(&testPaint, 2); // Monochrome
     testScreen.setScale(2);
-    //Paint_Clear(&testPaint, WHITE);
     testScreen.clear(WHITE);
 
     EPD_4IN2_V2_Display(BlackImage);  // Full clear once
@@ -54,10 +52,11 @@ int main(void) {
         //EPD_4IN2_V2_PartialDisplay(BlackImage, 10, 120, 280, 50);
         
     }*/
-    //Paint_ClearWindows(&testPaint, 10, 120, 400, 192, WHITE);
     testScreen.clearWindow(10, 120, 400, 192, WHITE);
-    //Paint_DrawString_EN(&testPaint, 10, 130, "Hello world!", &Font24, WHITE, BLACK);
-    testScreen.drawString(10, 130, "Hello world!", &Font24, WHITE, BLACK);
+    //testScreen.setRotate(ROTATE_90);
+    //testScreen.drawString(10, 130, "Hello world!", &Font24, WHITE, BLACK);
+    //testScreen.drawDot(150, 200, BLACK, Gui::DotSize::DOT_8, Gui::DotStyle::FILL_AROUND);
+    //testScreen.drawDot(150, 220, BLACK, Gui::DotSize::DOT_8, Gui::DotStyle::FILL_RIGHTUP);
 
     EPD_4IN2_V2_Display(BlackImage);
     EPD_4IN2_V2_Sleep();

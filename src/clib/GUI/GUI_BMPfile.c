@@ -60,7 +60,6 @@ UBYTE GUI_ReadBmp(PAINT *Paint, const char *path, UWORD Xstart, UWORD Ystart)
     BMPFILEHEADER bmpFileHeader;  //Define a bmp file header structure
     BMPINFOHEADER bmpInfoHeader;  //Define a bmp info header structure
 
-
     // Binary file open
     if((fp = fopen(path, "rb")) == NULL) {
         Debug("Cann't open the file!\n");
