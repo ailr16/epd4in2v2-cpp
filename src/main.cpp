@@ -17,11 +17,10 @@ int main(void) {
 
     //PAINT testPaint;
 
-    UWORD Imagesize = (EPD_4IN2_V2_WIDTH / 8) * EPD_4IN2_V2_HEIGHT;
-    UBYTE *BlackImage = (UBYTE *)malloc(Imagesize);
+    uint16_t image_size = (EPD_4IN2_V2_WIDTH / 8U) * EPD_4IN2_V2_HEIGHT;
+    UBYTE *BlackImage = (UBYTE *)malloc(image_size);
 
-    Gui::Screen testScreen;
-    Gui::Bmp bmpImage;
+    Gui::Picture testScreen;
 
     testScreen.newImage(BlackImage, EPD_4IN2_V2_WIDTH, EPD_4IN2_V2_HEIGHT, 0, WHITE);
     testScreen.setScale(2);
@@ -57,6 +56,11 @@ int main(void) {
     //testScreen.drawString(10, 130, "Hello world!", &Font24, WHITE, BLACK);
     //testScreen.drawDot(150, 200, BLACK, Gui::DotSize::DOT_8, Gui::DotStyle::FILL_AROUND);
     //testScreen.drawDot(150, 220, BLACK, Gui::DotSize::DOT_8, Gui::DotStyle::FILL_RIGHTUP);
+    testScreen.readBmp(Gui::BmpReadMode::MONOCHROME, "/home/rpi/Pictures/bmp/bw.bmp", 20, 20);
+    testScreen.drawString(20, 150, "Hello world!", &Font20, WHITE, BLACK);
+    testScreen.drawChar(20, 174, 'A', &Font24, BLACK, WHITE);
+    testScreen.drawFloatNum(20, 204, 12345.6789, &Font24, 4, BLACK, WHITE);
+
 
     EPD_4IN2_V2_Display(BlackImage);
     EPD_4IN2_V2_Sleep();
