@@ -3,35 +3,35 @@ import os
 
 from PIL import Image, ImageFont, ImageDraw
 
-def compute_max_width(char_list : list[str]) -> float:
-    max_width = 0
+def get_max_height(font: ImageFont.FreeTypeFont, char_list: list[str], font_size: int) -> int:
+    max_height = 0
 
-    for char in char_list:
-        font = ImageFont.truetype("arial.ttf", 48)
+    for char in chars:
+        width, height = font.getmask(char).size
+        if height > max_height:
+            max_height = height
 
-        bbox = font.getbbox(char)
-        width = bbox[2] - bbox[0]
-        if(width > max_width):
-            max_width = width
-
-    return max_width
-
+    return max_height
 
 def generate_font(char_list : list[str], size : int, font_name : str) -> None:
+    current_dir = os.path.curdir
 
-    with open("/home/ailr16/Documents/font.c", "w") as output:
-
+    with open(current_dir + "/output/" + font_name + ".c", "w") as output:
         output.write(f"#include \"fonts.h\"\n")
         output.write(f"const uint8_t {font_name}_Table[] = \n{{\n\t")
 
-        font = ImageFont.truetype("arial.ttf", size)
+        font = ImageFont.truetype(current_dir + "/fonts/" +"arial.ttf", size)
+        height = get_max_height(font, char_list, size)
 
-        width = compute_max_width(char_list)
+        print("============Max height: {0}".format(height))
 
         for char in chars:
-            img = Image.new('1', (width, size - 1) , 0)
+            width, __unused = font.getmask(char).size
+            width = width + 4
+
+            img = Image.new('1', (width, height) , 0)
             draw = ImageDraw.Draw(img)
-            draw.text((0,-8), char, font=font, fill=1)
+            draw.text((-1,0), char, font=font, fill=1)
             pixels = list(img.getdata())
 
             bitmap = []
@@ -45,14 +45,15 @@ def generate_font(char_list : list[str], size : int, font_name : str) -> None:
                         bitmap.append(byte)
                         byte = 0
 
-            bytes_per_line = int(width / 8)
+            bytes_per_line = int(width / 8)# + int(width % 8 != 0)
 
-            print(f"// '{char}' ({width} pixels wide)")
+            print(f"// '{char}' ({width}x{height}) pixels")
             output.write(f"// '{char}' {width} pixels wide\n\t")
 
             byte_count = 0
             for b in bitmap:
-                print(f"0x{b:02X},", end="")
+                #print(f"0x{b:02X},", end="")
+                print(f"0x{b:08b}"[2:], end="")
                 output.write(f"0x{b:02X},")
                 byte_count += 1
 
@@ -68,22 +69,11 @@ def generate_font(char_list : list[str], size : int, font_name : str) -> None:
         output.write(f"\t{size - 1},\n")
         output.write("};")
 
-chars = []
+chars = [' ', '!', '"', '#', '$', '%', '&', "'", '(', ')', '*', '+', ',', '-', '.', '/', '0']
+         #'1', '2', '3', '4', '5', '6', '7', '8', '9', ':', ';', '<', '=', '>', '?', '@', 'A',
+         #'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R',
+         #'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '[', '\\', ']', '^', '_', '`', 'a', 'b', 'c',
+         #'d', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't',
+         #'u', 'v', 'w', 'x', 'y', 'z', '{', '|', '}', '~']
 
-with open("/home/ailr16/Documents/git/e-Paper/RaspberryPi_JetsonNano/c/lib/Fonts/font8.c") as f:
-    current_line = f.readline()
-    while current_line.find('const') == -1:
-        current_line = f.readline()
-
-    while True:
-        current_line = f.readline()
-
-        if not current_line:
-            break
-
-        if "@" in current_line:
-            char_in_current_line = current_line[re.search("'(.)'",current_line).start() + 1]
-            chars.append(char_in_current_line)
-
-
-generate_font(chars, 48, "Arial24")
+generate_font(chars, 48, "Arial80")
