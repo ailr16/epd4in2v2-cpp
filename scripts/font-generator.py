@@ -61,8 +61,60 @@ def generate_font(char_list : list[str], size : int, font_name : str) -> None:
             width_bytes = int(img.width / 8) + ((img.width % 8) != 0)
             print(f"width: {img.width}")
             print(f"needed bytes for width: {width_bytes}")
+            
+            counter = 0
+            counter2 = 0
+            bit_counter = 7
+            byte = 0
+            for px in pixels:
+                print(px, end="")
+                counter += 1
+                counter2 +=1
+
+                if counter % 8 == 0:
+                    print(" ", end="")
+
+                if counter == img.width:
+                    counter = 0
+                    print("\n", end="")
+                    
+            print("\n", end="")
+
+            counter = 0
+            bit_counter = 7
+            bytes = []
+            byte = 0
+
+            for px in pixels:
+                if px:
+                    byte |= 1 << bit_counter
+                bit_counter -= 1
+                counter += 1
+
+                if bit_counter == -1:
+                    bytes.append(byte)
+                    bit_counter = 7
+                    byte = 0
+
+                if counter == img.width:
+                    bytes.append(byte)
+                    bit_counter = 7
+                    byte = 0
+                    counter = 0
+                
+            counter = 0
+            for b in bytes:
+                print(f"{b:08b} ", end="")
+                counter += 1
+
+                if counter == width_bytes:
+                    counter = 0
+                    print("\n", end="")
+            
+            print("\n", end="")
 
             #for y in range(img.height):
+            #    print(f"line {line}", end="")
             #    byte : bytearray = 0
             #    for x in range(img.width):
             #        if pixels[y * img.width + x]:
@@ -71,6 +123,7 @@ def generate_font(char_list : list[str], size : int, font_name : str) -> None:
             #            bitmap.append(byte)
             #            byte = 0
             #        index_end += 1
+            #    line += 1
 
 
 
@@ -110,6 +163,6 @@ def abc():
             'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't',
             'u', 'v', 'w', 'x', 'y', 'z', '{', '|', '}', '~']
     
-chars = ["A", "b", "j"]
+chars = ["A", " ", "!", "0", "g"]
 
 generate_font(chars, 48, "Arial80")
