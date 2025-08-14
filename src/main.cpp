@@ -12,6 +12,19 @@ extern "C"{
 }
 
 int main(void) {
+    uint16_t image_size = (EPD_4IN2_V2_WIDTH / 8U) * EPD_4IN2_V2_HEIGHT;
+    UBYTE *BlackImage = (UBYTE *)malloc(image_size);
+
+    Gui::Picture testScreen;
+
+    testScreen.newImage(BlackImage, EPD_4IN2_V2_WIDTH, EPD_4IN2_V2_HEIGHT, 0, WHITE);
+    testScreen.setScale(2);
+    testScreen.clear(WHITE);
+
+    testScreen.clearWindow(10, 120, 400, 192, WHITE);
+    testScreen.drawChar(10, 10, '!', &Arial80, BLACK, WHITE);
+
+    #if 0
     DEV_Module_Init();
     EPD_4IN2_V2_Init();  // 1-bit BW mode
 
@@ -52,19 +65,16 @@ int main(void) {
         
     }*/
     testScreen.clearWindow(10, 120, 400, 192, WHITE);
-    //testScreen.setRotate(ROTATE_90);
-    //testScreen.drawString(10, 130, "Hello world!", &Font24, WHITE, BLACK);
-    //testScreen.drawDot(150, 200, BLACK, Gui::DotSize::DOT_8, Gui::DotStyle::FILL_AROUND);
-    //testScreen.drawDot(150, 220, BLACK, Gui::DotSize::DOT_8, Gui::DotStyle::FILL_RIGHTUP);
-    testScreen.readBmp(Gui::BmpReadMode::MONOCHROME, "/home/rpi/Pictures/bmp/bw.bmp", 20, 20);
-    testScreen.drawString(20, 150, "Hello world!", &Font20, WHITE, BLACK);
-    testScreen.drawChar(20, 174, 'A', &Font24, BLACK, WHITE);
-    testScreen.drawFloatNum(20, 204, 12345.6789, &Font24, 4, BLACK, WHITE);
+    testScreen.drawString(10, 70, "Temperature is:", &Arial80, WHITE, BLACK);
+    testScreen.drawString(10, 150, "69", &Arial80, WHITE, BLACK);
 
 
     EPD_4IN2_V2_Display(BlackImage);
     EPD_4IN2_V2_Sleep();
     free(BlackImage);
     DEV_Module_Exit();
+    #endif
+
+
     return 0;
 }

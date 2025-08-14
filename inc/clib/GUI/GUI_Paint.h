@@ -209,6 +209,9 @@ void Paint_DrawTime(PAINT *Paint, UWORD Xstart, UWORD Ystart, PAINT_TIME *pTime,
 void Paint_DrawBitMap(PAINT *Paint, const unsigned char* image_buffer);
 
 
+void Paint_DrawChar2(PAINT *Paint, UWORD Xpoint, UWORD Ypoint, const char Acsii_Char,
+                    sFONT* Font, UWORD Color_Foreground, UWORD Color_Background);
+
 #endif
 
 

@@ -843,3 +843,62 @@ void Paint_DrawBitMap(PAINT *Paint, const unsigned char* image_buffer)
         }
     }
 }
+
+void Paint_DrawChar2(PAINT *Paint, UWORD Xpoint, UWORD Ypoint, const char Acsii_Char,
+                    sFONT* Font, UWORD Color_Foreground, UWORD Color_Background)
+{
+    UWORD Page, Column;
+
+    if (Xpoint > Paint->Width || Ypoint > Paint->Height) {
+        Debug("Paint_DrawChar Input exceeds the normal display range\r\n");
+        return;
+    }
+
+    printf("========Run drawchar========\n");
+    printf("\tCharacter:%c\n", Acsii_Char);
+    printf("\tFont Height:%d\n", Font->Height);
+    printf("\tFont Width:%d\n", Font->Width);
+    printf("============================\n");
+
+    //uint32_t Char_Offset = (Acsii_Char - ' ') * Font->Height * (Font->Width / 8 + (Font->Width % 8 ? 1 : 0));
+    uint32_t Char_Offset = (Acsii_Char - ' ') * Font->Height * (Font->Width / 8 + (Font->Width % 8 ? 1 : 0));
+    uint32_t real_width = Font->Width / 8 + (Font->Width % 8 != 0);
+    const unsigned char *ptr = &Font->table[Char_Offset];
+
+    printf("\tChar offset: %u\n", Char_Offset);
+
+    for(int32_t i = 0; i < Font->Height; i++){
+        for(int32_t j = 0; j < real_width; j++){
+            printf("%X ", Font->table[i + j]);
+        }
+        printf("\n");
+    }
+
+
+    #if 0
+    for (Page = 0; Page < Font->Height; Page ++ ) {
+        for (Column = 0; Column < Font->Width; Column ++ ) {
+
+            //To determine whether the font background color and screen background color is consistent
+            if (FONT_BACKGROUND == Color_Background) { //this process is to speed up the scan
+                if (*ptr & (0x80 >> (Column % 8)))
+                    Paint_SetPixel(Paint, Xpoint + Column, Ypoint + Page, Color_Foreground);
+                    // Paint_DrawPoint(Xpoint + Column, Ypoint + Page, Color_Foreground, DOT_PIXEL_DFT, DOT_STYLE_DFT);
+            } else {
+                if (*ptr & (0x80 >> (Column % 8))) {
+                    Paint_SetPixel(Paint, Xpoint + Column, Ypoint + Page, Color_Foreground);
+                    // Paint_DrawPoint(Xpoint + Column, Ypoint + Page, Color_Foreground, DOT_PIXEL_DFT, DOT_STYLE_DFT);
+                } else {
+                    Paint_SetPixel(Paint, Xpoint + Column, Ypoint + Page, Color_Background);
+                    // Paint_DrawPoint(Xpoint + Column, Ypoint + Page, Color_Background, DOT_PIXEL_DFT, DOT_STYLE_DFT);
+                }
+            }
+            //One pixel is 8 bits
+            if (Column % 8 == 7)
+                ptr++;
+        }// Write a line
+        if (Font->Width % 8 != 0)
+            ptr++;
+    }// Write all
+    #endif
+}

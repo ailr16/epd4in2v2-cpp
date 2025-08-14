@@ -39,6 +39,7 @@ add_library(lib__fonts__font16 clib/Fonts/font16.c)
 add_library(lib__fonts__font20 clib/Fonts/font20.c)
 add_library(lib__fonts__font24 clib/Fonts/font24.c)
 add_library(lib__fonts__font24cn clib/Fonts/font24CN.c)
+add_library(lib__fonts__Arial80 clib/Fonts/Arial80.c)
 
 set(clib_fonts
     lib__fonts__font8
@@ -48,6 +49,7 @@ set(clib_fonts
     lib__fonts__font20
     lib__fonts__font24
     lib__fonts__font24cn
+    lib__fonts__Arial80
 )
 
 # clib for GUI handling

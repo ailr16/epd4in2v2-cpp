@@ -1,9 +1,17 @@
 import os
+import argparse
+import sys
 
 from PIL import Image, ImageFont, ImageDraw
 
 class ConfigurationConstants:
     BYTES_PER_LINE = 16
+    CHARS = [' ', '!', '"', '#', '$', '%', '&', "'", '(', ')', '*', '+', ',', '-', '.', '/', '0',
+            '1', '2', '3', '4', '5', '6', '7', '8', '9', ':', ';', '<', '=', '>', '?', '@', 'A',
+            'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R',
+            'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '[', '\\', ']', '^', '_', '`', 'a', 'b', 'c',
+            'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't',
+            'u', 'v', 'w', 'x', 'y', 'z', '{', '|', '}', '~']
 
 class CharProperties:
     def __init__(self, char : str, width : int, height : int, i_start : int, i_end : int):
@@ -16,7 +24,7 @@ class CharProperties:
 def get_max_height(font: ImageFont.FreeTypeFont, char_list: list[str], font_size: int) -> int:
     max_height = 0
 
-    for char in chars:
+    for char in char_list:
         left, top, right, bottom = font.getbbox(char)
         height = bottom
 
@@ -28,11 +36,11 @@ def get_max_height(font: ImageFont.FreeTypeFont, char_list: list[str], font_size
 def generate_font(char_list : list[str], size : int, font_name : str) -> None:
     current_dir = os.path.curdir
 
-    with open(current_dir + "/output/" + font_name + ".c", "w") as output:
+    with open(current_dir + "/output/" + font_name[:-4] + str(size) + ".c", "w") as output:
         output.write(f"#include \"fonts.h\"\n")
-        output.write(f"const uint8_t {font_name}_Table[] = \n{{\n\t")
+        output.write(f"const uint8_t {font_name[:-4]}{size}_Table[] = \n{{\n\t")
 
-        font = ImageFont.truetype(current_dir + "/fonts/" +"arial.ttf", size)
+        font = ImageFont.truetype(current_dir + "/fonts/" + font_name, size)
         height = get_max_height(font, char_list, size)
         ascent, descent = font.getmetrics()
         baseline_offset = ascent 
@@ -42,7 +50,7 @@ def generate_font(char_list : list[str], size : int, font_name : str) -> None:
 
         char_properties : list[CharProperties] = []
 
-        for char in chars:
+        for char in char_list:
             index_start = index_end
 
             bbox = font.getbbox(char)
@@ -104,22 +112,35 @@ def generate_font(char_list : list[str], size : int, font_name : str) -> None:
         
 
         output.write("\n};\n")
-        output.write(f"const uint32_t {font_name}_LUT[] = \n{{\n")
+        output.write(f"const uint32_t {font_name[:-4]}{size}_LUT[] = \n{{\n")
         for char_p in char_properties:
             output.write(f"\t{char_p.width}, {char_p.index_start}, {char_p.index_end}, //'{char_p.char}'\n")
         output.write("};\n")
 
-        output.write(f"sFONT {font_name} = {{\n")
-        output.write(f"\t{font_name}_Table,\n")
+        output.write(f"sFONT {font_name[:-4]}{size} = {{\n")
+        output.write(f"\t{font_name[:-4]}{size}_Table,\n")
         output.write(f"\t{width},\n")
         output.write(f"\t{size - 1},\n")
         output.write("};")
 
-chars = [' ', '!', '"', '#', '$', '%', '&', "'", '(', ')', '*', '+', ',', '-', '.', '/', '0',
-        '1', '2', '3', '4', '5', '6', '7', '8', '9', ':', ';', '<', '=', '>', '?', '@', 'A',
-        'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R',
-        'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '[', '\\', ']', '^', '_', '`', 'a', 'b', 'c',
-        'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't',
-        'u', 'v', 'w', 'x', 'y', 'z', '{', '|', '}', '~']
 
-generate_font(chars, 48, "Arial80")
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser()
+    parser.add_argument("-fs", "--font_size", type=int, default=0, help="Font size (integer)")
+    parser.add_argument("-fn", "--font_name", type=str, default="", help="Font file name (the name of the file inside fonts/)")
+
+    args = parser.parse_args()
+
+    if args.font_size == 0:
+        print("Invalid font size!")
+        sys.exit()
+
+    if args.font_name == "":
+        print("Invalid font name!")
+        sys.exit()
+
+    generate_font(ConfigurationConstants.CHARS,
+                  args.font_size,
+                  args.font_name
+    )
