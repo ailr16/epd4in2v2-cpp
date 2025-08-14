@@ -5,6 +5,14 @@ from PIL import Image, ImageFont, ImageDraw
 class ConfigurationConstants:
     BYTES_PER_LINE = 16
 
+class CharProperties:
+    def __init__(self, char : str, width : int, height : int, i_start : int, i_end : int):
+        self.char = char
+        self.width = width
+        self.height = height
+        self.index_start = i_start
+        self.index_end = i_end
+
 def get_max_height(font: ImageFont.FreeTypeFont, char_list: list[str], font_size: int) -> int:
     max_height = 0
 
@@ -31,6 +39,8 @@ def generate_font(char_list : list[str], size : int, font_name : str) -> None:
 
         index_start = 0
         index_end = 0
+
+        char_properties : list[CharProperties] = []
 
         for char in chars:
             index_start = index_end
@@ -79,6 +89,7 @@ def generate_font(char_list : list[str], size : int, font_name : str) -> None:
             
 
             output.write(f"\n\t// '{char}' ({width}x{height}) pixels, start[{index_start}] end[{index_end}]\n\t")
+            char_properties.append(CharProperties(char, width, height, index_start, index_end))
 
             byte_count = 0
             for b in bytes:
@@ -91,14 +102,13 @@ def generate_font(char_list : list[str], size : int, font_name : str) -> None:
             
             index_end += 1
         
-        output.write("\n};\n")
-        output.write(f"fontLUT {font_name} = {{\n")
-        output.write(f"\t{font_name}_Table,\n")
-        output.write(f"\t{width},\n")
-        output.write(f"\t{size - 1},\n")
-        output.write("};")
 
         output.write("\n};\n")
+        output.write(f"const uint32_t {font_name}_LUT[] = \n{{\n")
+        for char_p in char_properties:
+            output.write(f"\t{char_p.width}, {char_p.index_start}, {char_p.index_end}, //'{char_p.char}'\n")
+        output.write("};\n")
+
         output.write(f"sFONT {font_name} = {{\n")
         output.write(f"\t{font_name}_Table,\n")
         output.write(f"\t{width},\n")
