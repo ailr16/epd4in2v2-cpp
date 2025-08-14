@@ -48,38 +48,10 @@ def generate_font(char_list : list[str], size : int, font_name : str) -> None:
 
             bitmap = []
 
-            counter = 0
-            for i in pixels:
-                print(i, end="")
-                counter += 1
-            
-                if counter == img.width:
-                    counter = 0
-                    print("\n", end="")
-            print("\n", end="")
-
             width_bytes = int(img.width / 8) + ((img.width % 8) != 0)
             print(f"width: {img.width}")
             print(f"needed bytes for width: {width_bytes}")
             
-            counter = 0
-            counter2 = 0
-            bit_counter = 7
-            byte = 0
-            for px in pixels:
-                print(px, end="")
-                counter += 1
-                counter2 +=1
-
-                if counter % 8 == 0:
-                    print(" ", end="")
-
-                if counter == img.width:
-                    counter = 0
-                    print("\n", end="")
-                    
-            print("\n", end="")
-
             counter = 0
             bit_counter = 7
             bytes = []
@@ -163,6 +135,6 @@ def abc():
             'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't',
             'u', 'v', 'w', 'x', 'y', 'z', '{', '|', '}', '~']
     
-chars = ["A", " ", "!", "0", "g"]
+chars = ["g"]
 
 generate_font(chars, 48, "Arial80")
