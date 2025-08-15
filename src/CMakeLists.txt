@@ -3,6 +3,8 @@ include_directories(
     ${CMAKE_SOURCE_DIR}/inc/clib/e-Paper
     ${CMAKE_SOURCE_DIR}/inc/clib/Fonts
     ${CMAKE_SOURCE_DIR}/inc/clib/GUI
+    # Cpp wrappers
+    ${CMAKE_SOURCE_DIR}/inc/
 )
 
 # clib source files for Config
@@ -37,6 +39,10 @@ add_library(lib__fonts__font16 clib/Fonts/font16.c)
 add_library(lib__fonts__font20 clib/Fonts/font20.c)
 add_library(lib__fonts__font24 clib/Fonts/font24.c)
 add_library(lib__fonts__font24cn clib/Fonts/font24CN.c)
+add_library(lib__fonts__arial48 clib/Fonts/arial48.c)
+add_library(lib__fonts__arial70 clib/Fonts/arial70.c)
+add_library(lib__fonts__comicSans69 clib/Fonts/ComicSansMS69.c)
+add_library(lib__fonts__BebasNeue66 clib/Fonts/BebasNeue66.c)
 
 set(clib_fonts
     lib__fonts__font8
@@ -46,6 +52,9 @@ set(clib_fonts
     lib__fonts__font20
     lib__fonts__font24
     lib__fonts__font24cn
+    lib__fonts__arial48
+    lib__fonts__arial70
+    lib__fonts__BebasNeue66
 )
 
 # clib for GUI handling
@@ -75,6 +84,11 @@ foreach(lib IN LISTS clib_config clib_epaper clib_fonts clib_gui)
     )
 endforeach()
 
+add_library(Gui Gui.cpp)
+target_link_libraries(Gui
+    ${clib_gui}
+)
+
 add_executable(main main.cpp)
 
 target_link_libraries(main
@@ -82,7 +96,7 @@ target_link_libraries(main
         ${clib_config}
         ${clib_epaper}
         ${clib_fonts}
-        ${clib_gui}
+        Gui
         lgpio
         m
 )

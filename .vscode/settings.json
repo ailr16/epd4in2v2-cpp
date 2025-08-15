@@ -1,5 +1,8 @@
 {
     "files.associations": {
-        "dev_config.h": "c"
+        "dev_config.h": "c",
+        "string": "cpp",
+        "cstddef": "cpp",
+        "fonts.h": "c"
     }
 }

@@ -89,7 +89,7 @@ typedef struct {
     UWORD HeightByte;
     UWORD Scale;
 } PAINT;
-extern PAINT Paint;
+//extern PAINT Paint;
 
 /**
  * Display rotate
@@ -181,37 +181,39 @@ typedef struct {
 extern PAINT_TIME sPaint_time;
 
 //init and Clear
-void Paint_NewImage(UBYTE *image, UWORD Width, UWORD Height, UWORD Rotate, UWORD Color);
-void Paint_SelectImage(UBYTE *image);
-void Paint_SetRotate(UWORD Rotate);
-void Paint_SetMirroring(UBYTE mirror);
-void Paint_SetPixel(UWORD Xpoint, UWORD Ypoint, UWORD Color);
-void Paint_SetScale(UBYTE scale);
+void Paint_NewImage(PAINT *Paint, UBYTE *image, UWORD Width, UWORD Height, UWORD Rotate, UWORD Color);
+void Paint_SelectImage(PAINT *Paint, UBYTE *image);
+void Paint_SetRotate(PAINT *Paint, UWORD Rotate);
+void Paint_SetMirroring(PAINT *Paint, UBYTE mirror);
+void Paint_SetPixel(PAINT *Paint, UWORD Xpoint, UWORD Ypoint, UWORD Color);
+void Paint_SetScale(PAINT *Paint, UBYTE scale);
 
-void Paint_Clear(UWORD Color);
-void Paint_ClearWindows(UWORD Xstart, UWORD Ystart, UWORD Xend, UWORD Yend, UWORD Color);
+void Paint_Clear(PAINT *Paint, UWORD Color);
+void Paint_ClearWindows(PAINT *Paint, UWORD Xstart, UWORD Ystart, UWORD Xend, UWORD Yend, UWORD Color);
 
 //Drawing
-void Paint_DrawPoint(UWORD Xpoint, UWORD Ypoint, UWORD Color, DOT_PIXEL Dot_Pixel, DOT_STYLE Dot_FillWay);
-void Paint_DrawLine(UWORD Xstart, UWORD Ystart, UWORD Xend, UWORD Yend, UWORD Color, DOT_PIXEL Line_width, LINE_STYLE Line_Style);
-void Paint_DrawRectangle(UWORD Xstart, UWORD Ystart, UWORD Xend, UWORD Yend, UWORD Color, DOT_PIXEL Line_width, DRAW_FILL Draw_Fill);
-void Paint_DrawCircle(UWORD X_Center, UWORD Y_Center, UWORD Radius, UWORD Color, DOT_PIXEL Line_width, DRAW_FILL Draw_Fill);
+void Paint_DrawPoint(PAINT *Paint, UWORD Xpoint, UWORD Ypoint, UWORD Color, DOT_PIXEL Dot_Pixel, DOT_STYLE Dot_FillWay);
+void Paint_DrawLine(PAINT *Paint, UWORD Xstart, UWORD Ystart, UWORD Xend, UWORD Yend, UWORD Color, DOT_PIXEL Line_width, LINE_STYLE Line_Style);
+void Paint_DrawRectangle(PAINT *Paint, UWORD Xstart, UWORD Ystart, UWORD Xend, UWORD Yend, UWORD Color, DOT_PIXEL Line_width, DRAW_FILL Draw_Fill);
+void Paint_DrawCircle(PAINT *Paint, UWORD X_Center, UWORD Y_Center, UWORD Radius, UWORD Color, DOT_PIXEL Line_width, DRAW_FILL Draw_Fill);
 
 //Display string
-void Paint_DrawChar(UWORD Xstart, UWORD Ystart, const char Acsii_Char, sFONT* Font, UWORD Color_Foreground, UWORD Color_Background);
-void Paint_DrawString_EN(UWORD Xstart, UWORD Ystart, const char * pString, sFONT* Font, UWORD Color_Foreground, UWORD Color_Background);
-void Paint_DrawString_CN(UWORD Xstart, UWORD Ystart, const char * pString, cFONT* font, UWORD Color_Foreground, UWORD Color_Background);
-void Paint_DrawNum(UWORD Xpoint, UWORD Ypoint, int32_t Nummber, sFONT* Font, UWORD Color_Foreground, UWORD Color_Background);
-void Paint_DrawNumDecimals(UWORD Xpoint, UWORD Ypoint, double Nummber, sFONT* Font, UWORD Digit, UWORD Color_Foreground, UWORD Color_Background); // Able to display decimals
-void Paint_DrawTime(UWORD Xstart, UWORD Ystart, PAINT_TIME *pTime, sFONT* Font, UWORD Color_Foreground, UWORD Color_Background);
+void Paint_DrawChar(PAINT *Paint, UWORD Xstart, UWORD Ystart, const char Acsii_Char, sFONT* Font, UWORD Color_Foreground, UWORD Color_Background);
+void Paint_DrawString_EN(PAINT *Paint, UWORD Xstart, UWORD Ystart, const char * pString, sFONT* Font, UWORD Color_Foreground, UWORD Color_Background);
+void Paint_DrawString_CN(PAINT *Paint, UWORD Xstart, UWORD Ystart, const char * pString, cFONT* font, UWORD Color_Foreground, UWORD Color_Background);
+void Paint_DrawNum(PAINT *Paint, UWORD Xpoint, UWORD Ypoint, int32_t Nummber, sFONT* Font, UWORD Color_Foreground, UWORD Color_Background);
+void Paint_DrawNumDecimals(PAINT *Paint, UWORD Xpoint, UWORD Ypoint, double Nummber, sFONT* Font, UWORD Digit, UWORD Color_Foreground, UWORD Color_Background); // Able to display decimals
+void Paint_DrawTime(PAINT *Paint, UWORD Xstart, UWORD Ystart, PAINT_TIME *pTime, sFONT* Font, UWORD Color_Foreground, UWORD Color_Background);
 
 //pic
-void Paint_DrawBitMap(const unsigned char* image_buffer);
+void Paint_DrawBitMap(PAINT *Paint, const unsigned char* image_buffer);
+
+// Adding support for variable-width fonts
+void Paint_DrawChar_VariableWidth(PAINT *Paint, UWORD Xpoint, UWORD Ypoint, const char Ascii_Char,
+                                  sFONT* Font, UWORD Color_Foreground, UWORD Color_Background);
+
+void Paint_DrawString_VariableWidth(PAINT *Paint, UWORD Xstart, UWORD Ystart, const char *pString,
+                         sFONT* Font, UWORD Color_Foreground, UWORD Color_Background);
 
 
 #endif
-
-
-
-
-

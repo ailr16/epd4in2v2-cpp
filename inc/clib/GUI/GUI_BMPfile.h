@@ -51,6 +51,7 @@
 #include <stdint.h>
 
 #include "DEV_Config.h"
+#include "GUI_Paint.h"
 
 /*Bitmap file header   14bit*/
 typedef struct BMP_FILE_HEADER {
@@ -85,10 +86,10 @@ typedef struct RGB_QUAD {
 } __attribute__ ((packed)) BMPRGBQUAD;
 /**************************************** end ***********************************************/
 
-UBYTE GUI_ReadBmp(const char *path, UWORD Xstart, UWORD Ystart);
-UBYTE GUI_ReadBmp_4Gray(const char *path, UWORD Xstart, UWORD Ystart);
-UBYTE GUI_ReadBmp_16Gray(const char *path, UWORD Xstart, UWORD Ystart);
-UBYTE GUI_ReadBmp_RGB_4Color(const char *path, UWORD Xstart, UWORD Ystart);
-UBYTE GUI_ReadBmp_RGB_6Color(const char *path, UWORD Xstart, UWORD Ystart);
-UBYTE GUI_ReadBmp_RGB_7Color(const char *path, UWORD Xstart, UWORD Ystart);
+UBYTE GUI_ReadBmp(PAINT *Paint, const char *path, UWORD Xstart, UWORD Ystart);
+UBYTE GUI_ReadBmp_4Gray(PAINT *Paint, const char *path, UWORD Xstart, UWORD Ystart);
+UBYTE GUI_ReadBmp_16Gray(PAINT *Paint, const char *path, UWORD Xstart, UWORD Ystart);
+UBYTE GUI_ReadBmp_RGB_4Color(PAINT *Paint, const char *path, UWORD Xstart, UWORD Ystart);
+UBYTE GUI_ReadBmp_RGB_6Color(PAINT *Paint, const char *path, UWORD Xstart, UWORD Ystart);
+UBYTE GUI_ReadBmp_RGB_7Color(PAINT *Paint, const char *path, UWORD Xstart, UWORD Ystart);
 #endif
