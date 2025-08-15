@@ -3400,7 +3400,7 @@ const uint32_t ComicSansMS69_LUT[] =
 	41, 49664, 50245, //'~'
 };
 sFONT ComicSansMS69 = {
-	ComicSansMS69_Table,
-	41,
-	68,
+	.table = ComicSansMS69_Table,
+	.lut = ComicSansMS69_LUT,
+	.Height = 97,
 };

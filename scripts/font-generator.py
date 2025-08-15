@@ -118,9 +118,9 @@ def generate_font(char_list : list[str], size : int, font_name : str) -> None:
         output.write("};\n")
 
         output.write(f"sFONT {font_name[:-4]}{size} = {{\n")
-        output.write(f"\t{font_name[:-4]}{size}_Table,\n")
-        output.write(f"\t{width},\n")
-        output.write(f"\t{size - 1},\n")
+        output.write(f"\t.table = {font_name[:-4]}{size}_Table,\n")
+        output.write(f"\t.lut = {font_name[:-4]}{size}_LUT,\n")
+        output.write(f"\t.Height = {height},\n")
         output.write("};")
 
 

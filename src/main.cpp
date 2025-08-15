@@ -15,23 +15,10 @@ int main(void) {
     uint16_t image_size = (EPD_4IN2_V2_WIDTH / 8U) * EPD_4IN2_V2_HEIGHT;
     UBYTE *BlackImage = (UBYTE *)malloc(image_size);
 
-    Gui::Picture testScreen;
-
-    testScreen.newImage(BlackImage, EPD_4IN2_V2_WIDTH, EPD_4IN2_V2_HEIGHT, 0, WHITE);
-    testScreen.setScale(2);
-    testScreen.clear(WHITE);
-
-    testScreen.clearWindow(10, 120, 400, 192, WHITE);
-    testScreen.drawChar(10, 10, '!', &Arial80, BLACK, WHITE);
-
-    #if 0
     DEV_Module_Init();
     EPD_4IN2_V2_Init();  // 1-bit BW mode
 
     //PAINT testPaint;
-
-    uint16_t image_size = (EPD_4IN2_V2_WIDTH / 8U) * EPD_4IN2_V2_HEIGHT;
-    UBYTE *BlackImage = (UBYTE *)malloc(image_size);
 
     Gui::Picture testScreen;
 
@@ -65,15 +52,24 @@ int main(void) {
         
     }*/
     testScreen.clearWindow(10, 120, 400, 192, WHITE);
-    testScreen.drawString(10, 70, "Temperature is:", &Arial80, WHITE, BLACK);
-    testScreen.drawString(10, 150, "69", &Arial80, WHITE, BLACK);
+    //testScreen.drawString(10, 70, "Temperature is:", &Arial80, WHITE, BLACK);
+    //testScreen.drawString(10, 150, "69", &Arial80, WHITE, BLACK);
+
+    testScreen.drawChar(20, 20, 's', &arial70, BLACK, WHITE);
+    testScreen.drawChar(20, 80, 's', &arial48, BLACK, WHITE);
+    testScreen.drawChar(100, 20, 's', &ComicSansMS69, BLACK, WHITE);
+    //testScreen.drawChar(48, 20, 'i', &arial48, BLACK, WHITE);
+    //testScreen.drawChar(60, 20, 'l', &arial48, BLACK, WHITE);
+    //testScreen.drawChar(72, 20, 'r', &arial48, BLACK, WHITE);
+    //testScreen.drawChar(90, 20, '1', &arial48, BLACK, WHITE);
+    //testScreen.drawChar(118, 20, '6', &arial48, BLACK, WHITE);
+    //testScreen.drawChar(146, 20, 's', &arial48, BLACK, WHITE);
 
 
     EPD_4IN2_V2_Display(BlackImage);
     EPD_4IN2_V2_Sleep();
     free(BlackImage);
     DEV_Module_Exit();
-    #endif
 
 
     return 0;

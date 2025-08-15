@@ -858,22 +858,45 @@ void Paint_DrawChar2(PAINT *Paint, UWORD Xpoint, UWORD Ypoint, const char Acsii_
     printf("\tCharacter:%c\n", Acsii_Char);
     printf("\tFont Height:%d\n", Font->Height);
     printf("\tFont Width:%d\n", Font->Width);
-    printf("============================\n");
+    printf("\n");
 
     //uint32_t Char_Offset = (Acsii_Char - ' ') * Font->Height * (Font->Width / 8 + (Font->Width % 8 ? 1 : 0));
     uint32_t Char_Offset = (Acsii_Char - ' ') * Font->Height * (Font->Width / 8 + (Font->Width % 8 ? 1 : 0));
     uint32_t real_width = Font->Width / 8 + (Font->Width % 8 != 0);
+
+    uint32_t char_lut_offset = (Acsii_Char - ' ') * 3;
+
     const unsigned char *ptr = &Font->table[Char_Offset];
 
-    printf("\tChar offset: %u\n", Char_Offset);
+    uint32_t width = Font->lut[char_lut_offset];
+    uint32_t width_byte = Font->lut[char_lut_offset];
+    width_byte = width_byte / 8 + (width_byte % 8 != 0);
+    uint32_t i_start = Font->lut[char_lut_offset + 1];
+    uint32_t i_end = Font->lut[char_lut_offset + 2];
 
-    for(int32_t i = 0; i < Font->Height; i++){
-        for(int32_t j = 0; j < real_width; j++){
-            printf("%X ", Font->table[i + j]);
+    printf("\twidth: %u\n", width);
+    printf("\tindex_start: %u\n", i_start);
+    printf("\tindex_end: %u\n", i_end);
+
+    uint32_t line_counter = 0;
+    uint32_t bit_counter = 0;
+    for(int32_t i = i_start; i <= i_end; i++){
+        for(int8_t bit = 7; bit >= 0; bit--){
+            uint8_t current_bit = (Font->table[i] >> bit) & 1;
+            bit_counter++;
+            printf("%d", current_bit);
+            if(current_bit)
+                Paint_SetPixel(Paint, Xpoint + bit_counter, Ypoint + line_counter, Color_Foreground);
+
+            if(bit_counter == width){
+                bit_counter = 0;
+                printf("\n");
+                line_counter++;
+                break;
+            }
         }
-        printf("\n");
     }
-
+    printf("\n");
 
     #if 0
     for (Page = 0; Page < Font->Height; Page ++ ) {

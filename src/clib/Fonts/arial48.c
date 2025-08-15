@@ -1469,7 +1469,7 @@ const uint32_t arial48_LUT[] =
 	28, 19494, 19709, //'~'
 };
 sFONT arial48 = {
-	arial48_Table,
-	28,
-	47,
+	.table = arial48_Table,
+	.lut = arial48_LUT,
+	.Height = 54,
 };

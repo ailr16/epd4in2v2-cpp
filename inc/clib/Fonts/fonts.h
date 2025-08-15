@@ -57,7 +57,7 @@ typedef struct _tFont
   const uint8_t *table;
   uint16_t Width;
   uint16_t Height;
-  
+  const uint32_t *lut;
 } sFONT;
 
 
@@ -84,7 +84,9 @@ extern sFONT Font20;
 extern sFONT Font16;
 extern sFONT Font12;
 extern sFONT Font8;
-extern sFONT Arial48;
+extern sFONT arial48;
+extern sFONT arial70;
+extern sFONT ComicSansMS69;
 
 extern cFONT Font12CN;
 extern cFONT Font24CN;
