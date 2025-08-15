@@ -53,7 +53,7 @@ namespace Gui{
 
     void Picture::drawChar(uint16_t x_position, uint16_t y_position, const char ascii_char, sFONT* font, uint16_t color_foreground, uint16_t color_background){
         //Paint_DrawChar(&this->screenHandler, x_position, y_position, ascii_char, font, color_foreground, color_background);
-        Paint_DrawChar2(&this->screenHandler, x_position, y_position, ascii_char, font, color_foreground, color_background);
+        Paint_DrawChar_VariableWidth(&this->screenHandler, x_position, y_position, ascii_char, font, color_foreground, color_background);
     }
 
     void Picture::drawString(uint16_t x_position, uint16_t y_position, const char * pString, sFONT* font, uint16_t color_foreground, uint16_t color_background){
