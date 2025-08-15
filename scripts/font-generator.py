@@ -122,15 +122,13 @@ def generate_font(char_list : list[str], size : int, font_name : str) -> None:
                     byte_count = 0
                     fdebug.write("\n")
             fdebug.write("\n")
-            
-            index_end += 1
 
             byte_count = 0
             for b in bytes:
                 output.write(f"0x{b:02X},")
                 byte_count += 1
 
-                if(byte_count == ConfigurationConstants.BYTES_PER_LINE):
+                if(byte_count == width_bytes):
                     byte_count = 0
                     output.write("\n\t")
             
