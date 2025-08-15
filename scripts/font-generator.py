@@ -12,6 +12,7 @@ class ConfigurationConstants:
             'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '[', '\\', ']', '^', '_', '`', 'a', 'b', 'c',
             'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't',
             'u', 'v', 'w', 'x', 'y', 'z', '{', '|', '}', '~']
+    #CHARS = ['E', 'A']
 
 class CharProperties:
     def __init__(self, char : str, width : int, height : int, i_start : int, i_end : int):
@@ -37,6 +38,9 @@ def generate_font(char_list : list[str], size : int, font_name : str) -> None:
     current_dir = os.path.curdir
 
     with open(current_dir + "/output/" + font_name[:-4] + str(size) + ".c", "w") as output:
+
+        fdebug = open(current_dir + "/output/" + font_name[:-4] + str(size) + "_debug.txt", "w")
+
         output.write(f"#include \"fonts.h\"\n")
         output.write(f"const uint8_t {font_name[:-4]}{size}_Table[] = \n{{\n\t")
 
@@ -74,6 +78,16 @@ def generate_font(char_list : list[str], size : int, font_name : str) -> None:
             bytes = []
             byte = 0
 
+            counter = 0
+            for px in pixels:
+                fdebug.write(str(px))
+                counter += 1
+                if counter == width:
+                    counter = 0
+                    fdebug.write("\n")
+            fdebug.write("\n")
+
+            counter = 0
             for px in pixels:
                 if px:
                     byte |= 1 << bit_counter
@@ -86,7 +100,7 @@ def generate_font(char_list : list[str], size : int, font_name : str) -> None:
                     bit_counter = 7
                     byte = 0
 
-                if counter == width:
+                elif counter == width:
                     bytes.append(byte)
                     index_end += 1
                     bit_counter = 7
@@ -98,6 +112,18 @@ def generate_font(char_list : list[str], size : int, font_name : str) -> None:
 
             output.write(f"\n\t// '{char}' ({width}x{height}) pixels, start[{index_start}] end[{index_end}]\n\t")
             char_properties.append(CharProperties(char, width, height, index_start, index_end))
+
+            byte_count = 0
+            for b in bytes:
+                fdebug.write(f"{b:08b},")
+                byte_count += 1
+
+                if(byte_count == width_bytes):
+                    byte_count = 0
+                    fdebug.write("\n")
+            fdebug.write("\n")
+            
+            index_end += 1
 
             byte_count = 0
             for b in bytes:
