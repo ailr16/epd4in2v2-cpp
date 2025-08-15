@@ -105,8 +105,8 @@ namespace Gui{
                                 x_position, y_position,
                                 pString,
                                 font,
-                                color_foreground,
-                                color_background
+                                color_background,
+                                color_foreground
                                 );
         }
         else{

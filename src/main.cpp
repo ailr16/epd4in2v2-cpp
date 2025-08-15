@@ -60,8 +60,9 @@ int main(void) {
     //testScreen.drawChar(100, 20, 's', &ComicSansMS69, BLACK, WHITE);
     //testScreen.drawChar(200, 46, 's', &Font24, BLACK, WHITE);
 
-    //testScreen.drawString(20, 160, "abc", &Font24, WHITE, BLACK);
-    testScreen.drawString(1, 1, "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!0123456789!()/&,;.-_%$#@*", &BebasNeue66, BLACK, WHITE);
+    testScreen.drawString(20, 160, "abc", &Font24, BLACK, WHITE);
+    //testScreen.drawString(2, 20, "Angel", &Tangerine60, BLACK, WHITE);
+    //testScreen.drawString(2, 90, "Lozano", &Tangerine60, BLACK, WHITE);
 
     EPD_4IN2_V2_Display(BlackImage);
     EPD_4IN2_V2_Sleep();

@@ -88,6 +88,7 @@ extern sFONT arial48;
 extern sFONT arial70;
 extern sFONT ComicSansMS69;
 extern sFONT BebasNeue66;
+extern sFONT Tangerine60;
 
 extern cFONT Font12CN;
 extern cFONT Font24CN;
