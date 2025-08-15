@@ -38,9 +38,6 @@ def generate_font(char_list : list[str], size : int, font_name : str) -> None:
     current_dir = os.path.curdir
 
     with open(current_dir + "/output/" + font_name[:-4] + str(size) + ".c", "w") as output:
-
-        fdebug = open(current_dir + "/output/" + font_name[:-4] + str(size) + "_debug.txt", "w")
-
         output.write(f"#include \"fonts.h\"\n")
         output.write(f"const uint8_t {font_name[:-4]}{size}_Table[] = \n{{\n\t")
 
@@ -80,15 +77,6 @@ def generate_font(char_list : list[str], size : int, font_name : str) -> None:
 
             counter = 0
             for px in pixels:
-                fdebug.write(str(px))
-                counter += 1
-                if counter == width:
-                    counter = 0
-                    fdebug.write("\n")
-            fdebug.write("\n")
-
-            counter = 0
-            for px in pixels:
                 if px:
                     byte |= 1 << bit_counter
                 bit_counter -= 1
@@ -115,20 +103,10 @@ def generate_font(char_list : list[str], size : int, font_name : str) -> None:
 
             byte_count = 0
             for b in bytes:
-                fdebug.write(f"{b:08b},")
-                byte_count += 1
-
-                if(byte_count == width_bytes):
-                    byte_count = 0
-                    fdebug.write("\n")
-            fdebug.write("\n")
-
-            byte_count = 0
-            for b in bytes:
                 output.write(f"0x{b:02X},")
                 byte_count += 1
 
-                if(byte_count == width_bytes):
+                if(byte_count == ConfigurationConstants.BYTES_PER_LINE):
                     byte_count = 0
                     output.write("\n\t")
             
