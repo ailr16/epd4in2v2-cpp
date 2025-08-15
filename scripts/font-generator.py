@@ -12,6 +12,7 @@ class ConfigurationConstants:
             'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '[', '\\', ']', '^', '_', '`', 'a', 'b', 'c',
             'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't',
             'u', 'v', 'w', 'x', 'y', 'z', '{', '|', '}', '~']
+    #CHARS = ['E', 'A']
 
 class CharProperties:
     def __init__(self, char : str, width : int, height : int, i_start : int, i_end : int):
@@ -74,6 +75,7 @@ def generate_font(char_list : list[str], size : int, font_name : str) -> None:
             bytes = []
             byte = 0
 
+            counter = 0
             for px in pixels:
                 if px:
                     byte |= 1 << bit_counter
@@ -86,7 +88,7 @@ def generate_font(char_list : list[str], size : int, font_name : str) -> None:
                     bit_counter = 7
                     byte = 0
 
-                if counter == width:
+                elif counter == width:
                     bytes.append(byte)
                     index_end += 1
                     bit_counter = 7
