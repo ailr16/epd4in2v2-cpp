@@ -61,7 +61,7 @@ int main(void) {
     //testScreen.drawChar(200, 46, 's', &Font24, BLACK, WHITE);
 
     //testScreen.drawString(20, 160, "abc", &Font24, WHITE, BLACK);
-    testScreen.drawString(1, 1, "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!0123456789!()/&,;.-_%$#@*", &BebasNeue66, BLACK, WHITE);
+    testScreen.drawString(1, 1, "ABCDEFGHIJKLMNOPQRsTUVWXYZ0123456789!0123456789!()/&,;.-_%$#@*", &arial48, BLACK, WHITE);
 
     EPD_4IN2_V2_Display(BlackImage);
     EPD_4IN2_V2_Sleep();
