@@ -208,13 +208,12 @@ void Paint_DrawTime(PAINT *Paint, UWORD Xstart, UWORD Ystart, PAINT_TIME *pTime,
 //pic
 void Paint_DrawBitMap(PAINT *Paint, const unsigned char* image_buffer);
 
-
+// Adding support for variable-width fonts
 void Paint_DrawChar_VariableWidth(PAINT *Paint, UWORD Xpoint, UWORD Ypoint, const char Ascii_Char,
-                    sFONT* Font, UWORD Color_Foreground, UWORD Color_Background);
+                                  sFONT* Font, UWORD Color_Foreground, UWORD Color_Background);
+
+void Paint_DrawString_VariableWidth(PAINT *Paint, UWORD Xstart, UWORD Ystart, const char *pString,
+                         sFONT* Font, UWORD Color_Foreground, UWORD Color_Background);
+
 
 #endif
-
-
-
-
-

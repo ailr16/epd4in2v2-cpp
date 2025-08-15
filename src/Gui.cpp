@@ -32,36 +32,103 @@ namespace Gui{
     }
 
     void Picture::clearWindow(uint16_t x_start, uint16_t y_start, uint16_t x_end, uint16_t y_end, uint16_t color){
-        Paint_ClearWindows(&this->screenHandler, x_start, y_start, x_end, y_end, color);
+        Paint_ClearWindows(&this->screenHandler,
+                           x_start, y_start,
+                           x_end, y_end,
+                           color
+                           );
     }
 
     void Picture::drawDot(uint16_t x_position, uint16_t y_position, uint16_t color, uint8_t dot_size, uint8_t dot_style){
-        Paint_DrawPoint(&this->screenHandler, x_position, y_position, color, static_cast<DOT_PIXEL>(dot_size), static_cast<DOT_STYLE>(dot_style));
+        Paint_DrawPoint(&this->screenHandler,
+                        x_position, y_position,
+                        color,
+                        static_cast<DOT_PIXEL>(dot_size),
+                        static_cast<DOT_STYLE>(dot_style)
+                        );
     }
 
     void Picture::drawLine(uint16_t x_start, uint16_t y_start, uint16_t x_end, uint16_t y_end, uint16_t color, uint8_t dot_size, uint8_t line_style){
-        Paint_DrawLine(&this->screenHandler, x_start, y_start, x_end, y_end, color, static_cast<DOT_PIXEL>(dot_size), static_cast<LINE_STYLE>(line_style));
+        Paint_DrawLine(&this->screenHandler,
+                        x_start, y_start,
+                        x_end, y_end,
+                        color,
+                        static_cast<DOT_PIXEL>(dot_size),
+                        static_cast<LINE_STYLE>(line_style)
+                        );
     }
 
     void Picture::drawRectangle(uint16_t x_start, uint16_t y_start, uint16_t x_end, uint16_t y_end, uint16_t color, uint8_t dot_size, uint8_t geometry_fill){
-        Paint_DrawRectangle(&this->screenHandler, x_start, y_start, x_end, y_end, color, static_cast<DOT_PIXEL>(dot_size), static_cast<DRAW_FILL>(geometry_fill));
+        Paint_DrawRectangle(&this->screenHandler,
+                            x_start, y_start,
+                            x_end, y_end,
+                            color,
+                            static_cast<DOT_PIXEL>(dot_size),
+                            static_cast<DRAW_FILL>(geometry_fill)
+                            );
     }
 
     void Picture::drawCircle(uint16_t x_center, uint16_t y_center, uint16_t radius, uint16_t color, uint8_t dot_size, uint8_t geometry_fill){
-        Paint_DrawCircle(&this->screenHandler, x_center, y_center, radius, color, static_cast<DOT_PIXEL>(dot_size), static_cast<DRAW_FILL>(geometry_fill));
+        Paint_DrawCircle(&this->screenHandler,
+                         x_center, y_center,
+                         radius, color,
+                         static_cast<DOT_PIXEL>(dot_size),
+                         static_cast<DRAW_FILL>(geometry_fill)
+                        );
     }
 
     void Picture::drawChar(uint16_t x_position, uint16_t y_position, const char ascii_char, sFONT* font, uint16_t color_foreground, uint16_t color_background){
-        //Paint_DrawChar(&this->screenHandler, x_position, y_position, ascii_char, font, color_foreground, color_background);
-        Paint_DrawChar_VariableWidth(&this->screenHandler, x_position, y_position, ascii_char, font, color_foreground, color_background);
+        if(font->lut == nullptr){
+            /* Monospaced font */
+            Paint_DrawChar(&this->screenHandler,
+                           x_position, y_position,
+                           ascii_char, font,
+                           color_foreground,
+                           color_background
+                           );
+        }
+        else{
+            Paint_DrawChar_VariableWidth(&this->screenHandler,
+                                         x_position, y_position,
+                                         ascii_char,
+                                         font,
+                                         color_foreground,
+                                         color_background
+                                        );
+        }
     }
 
     void Picture::drawString(uint16_t x_position, uint16_t y_position, const char * pString, sFONT* font, uint16_t color_foreground, uint16_t color_background){
-        Paint_DrawString_EN(&this->screenHandler, x_position, y_position, pString, font, color_foreground, color_background);
+        if(font->lut == nullptr){
+            /* Monospaced font */
+            Paint_DrawString_EN(&this->screenHandler,
+                                x_position, y_position,
+                                pString,
+                                font,
+                                color_foreground,
+                                color_background
+                                );
+        }
+        else{
+            Paint_DrawString_VariableWidth(&this->screenHandler,
+                                x_position, y_position,
+                                pString,
+                                font,
+                                color_foreground,
+                                color_background
+                                );
+        }
     }
 
     void Picture::drawFloatNum(uint16_t x_position, uint16_t y_position, double number, sFONT* font, uint16_t digit, uint16_t color_foreground, uint16_t color_background){
-        Paint_DrawNumDecimals(&this->screenHandler, x_position, y_position, number, font, digit, color_foreground, color_background);
+        Paint_DrawNumDecimals(&this->screenHandler,
+                              x_position, y_position,
+                              number,
+                              font,
+                              digit,
+                              color_foreground,
+                              color_background
+                            );
     }
 
     unsigned char Picture::readBmp(unsigned char read_mode, std::string path, unsigned int x_start, unsigned int y_start){
