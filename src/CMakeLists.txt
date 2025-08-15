@@ -42,6 +42,7 @@ add_library(lib__fonts__font24cn clib/Fonts/font24CN.c)
 add_library(lib__fonts__arial48 clib/Fonts/arial48.c)
 add_library(lib__fonts__arial70 clib/Fonts/arial70.c)
 add_library(lib__fonts__comicSans69 clib/Fonts/ComicSansMS69.c)
+add_library(lib__fonts__BebasNeue66 clib/Fonts/BebasNeue66.c)
 
 set(clib_fonts
     lib__fonts__font8
@@ -53,7 +54,7 @@ set(clib_fonts
     lib__fonts__font24cn
     lib__fonts__arial48
     lib__fonts__arial70
-    lib__fonts__comicSans69
+    lib__fonts__BebasNeue66
 )
 
 # clib for GUI handling
