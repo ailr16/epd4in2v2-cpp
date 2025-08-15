@@ -143,7 +143,7 @@ Info:
 uint8_t SYSFS_software_spi_transfer(uint8_t value)
 {
     // printf("value = %d\r\n", value);
-    uint8_t Read_data;
+    uint8_t Read_data = 0;
     if (software_spi.Order == SOFTWARE_SPI_LSBFIRST) {
         uint8_t temp =
             ((value & 0x01) << 7) |

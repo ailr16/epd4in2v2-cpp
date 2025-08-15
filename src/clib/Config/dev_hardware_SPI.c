@@ -48,6 +48,14 @@ HARDWARE_SPI hardware_SPI;
 
 static uint8_t bits = 8; 
 
+/* These macros are already defined in linux/spi/spi.h */
+#undef SPI_CS_HIGH
+#undef SPI_LSB_FIRST
+#undef SPI_3WIRE
+#undef SPI_LOOP
+#undef SPI_NO_CS
+#undef SPI_READY
+
 #define SPI_CS_HIGH     0x04                //Chip select high  
 #define SPI_LSB_FIRST   0x08                //LSB  
 #define SPI_3WIRE       0x10                //3-wire mode SI and SO same line
