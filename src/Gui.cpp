@@ -1,12 +1,23 @@
 #include "Gui.hpp"
 
 namespace Gui{
-    void Picture::newImage(uint8_t *image, uint16_t width, uint16_t height, uint16_t rotate, uint16_t color){
-        Paint_NewImage(&this->screenHandler, image, width, height, rotate, color);
+    Picture::~Picture(){
+        free(this->image);
     }
 
-    void Picture::selectImage(uint8_t *image){
-        Paint_SelectImage(&this->screenHandler, image);
+    void Picture::newImage(uint16_t width, uint16_t height, uint16_t rotate, uint16_t color){
+        uint16_t image_size = (width / 8U) * height;
+
+        this->image = (uint8_t*)malloc(image_size);
+        if(this->image == NULL) {
+            return;
+        }
+
+        Paint_NewImage(&this->screenHandler, this->image, width, height, rotate, color);
+    }
+
+    uint8_t* Picture::getImage(void){
+        return this->image;
     }
 
     void Picture::setRotate(uint16_t rotate){

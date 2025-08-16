@@ -2,6 +2,7 @@
 #define GUI_HPP
 
 #include <string>
+#include <cstdlib>
 
 extern "C"{
     #include "GUI_BMPfile.h"
@@ -44,11 +45,16 @@ namespace Gui {
     class Picture {
         private:
         PAINT screenHandler;
+        uint8_t *image;
 
         public:
         Picture(){}
-        void newImage(uint8_t *image, uint16_t width, uint16_t height, uint16_t rotate, uint16_t color);
-        void selectImage(uint8_t *image);
+        ~Picture();
+
+        void newImage(uint16_t width, uint16_t height, uint16_t rotate, uint16_t color);
+        uint8_t* getImage(void);
+
+        void selectImage(void);
         void setRotate(uint16_t rotate);
         void setMirroring(uint8_t mirror);
         void setPixel(uint16_t x_position, uint16_t y_position, uint16_t color);
