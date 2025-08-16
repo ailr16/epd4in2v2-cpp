@@ -3,6 +3,7 @@
 
 extern "C"{
     #include "EPD_4in2_V2.h"
+    #include "DEV_Config.h"
 }
 
 namespace DisplayApi {
@@ -18,14 +19,16 @@ namespace DisplayApi {
             uint8_t initMode;
 
         public:
-            Display(){}
-
+            Display();
+            ~Display();
             uint8_t init(uint8_t mode);
             void clear(void);
             void print(uint8_t* frame);
             void partialPrint(uint8_t* frame, uint16_t x_position, uint16_t y_position, uint16_t width, uint16_t length);
             void sleep(void);
     };
+
+    void delay_ms(uint32_t ms);
 }
 
 #endif

@@ -1,5 +1,9 @@
 #include "DisplayApi.hpp"
 
+DisplayApi::Display::Display(){
+    DEV_Module_Init();
+}
+
 uint8_t DisplayApi::Display::init(uint8_t mode) {
     uint8_t opStatus = 0;
     this->initMode = mode;
@@ -59,4 +63,13 @@ void DisplayApi::Display::partialPrint(uint8_t* frame, uint16_t x_position, uint
 
 void DisplayApi::Display::sleep(void){
     EPD_4IN2_V2_Sleep();
+}
+
+DisplayApi::Display::~Display(){
+    this->sleep();
+    DEV_Module_Exit();
+}
+
+void DisplayApi::delay_ms(uint32_t ms){
+    DEV_Delay_ms(ms);
 }
