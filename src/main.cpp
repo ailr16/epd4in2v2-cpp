@@ -1,73 +1,39 @@
-#include <cstdlib>
 #include <csignal>
 #include <cstring>
 
 #include "Gui.hpp"
-
-extern "C"{
-    #include "DEV_Config.h"
-    #include "Debug.h"
-    #include <stdlib.h> // malloc() free()
-    #include "EPD_4in2_V2.h"
-}
+#include "DisplayApi.hpp"
 
 int main(void) {
-    uint16_t image_size = (EPD_4IN2_V2_WIDTH / 8U) * EPD_4IN2_V2_HEIGHT;
-    UBYTE *BlackImage = (UBYTE *)malloc(image_size);
+    DisplayApi::Display display;
+    Gui::Picture picture;
+    Gui::Picture picture2;
 
-    DEV_Module_Init();
-    EPD_4IN2_V2_Init();  // 1-bit BW mode
+    display.init(DisplayApi::InitMode::NORMAL);
 
-    //PAINT testPaint;
+    picture.newImage(EPD_4IN2_V2_WIDTH, EPD_4IN2_V2_HEIGHT, 0, WHITE);
+    picture2.newImage(EPD_4IN2_V2_WIDTH, EPD_4IN2_V2_HEIGHT, 0, WHITE);
 
-    Gui::Picture testScreen;
+    picture.setScale(2);
+    picture2.setScale(2);
 
-    testScreen.newImage(BlackImage, EPD_4IN2_V2_WIDTH, EPD_4IN2_V2_HEIGHT, 0, WHITE);
-    testScreen.setScale(2);
-    testScreen.clear(WHITE);
+    picture.clear(WHITE);
+    picture2.clear(WHITE);
 
-    EPD_4IN2_V2_Display(BlackImage);  // Full clear once
+    display.print(picture.getImage());
 
-    /*for (int i = 0; i < sizeof(lyrics)/sizeof(lyrics[0]); i+=2) {
-        // Clear just the region
-        Paint_ClearWindows(10, 120, 400, 192, WHITE);
+    //picture.drawString(20, 160, "abc", &Font24, BLACK, WHITE);
+    picture.drawString(10, 48, "This is", &arial48, BLACK, WHITE);
+    picture.drawString(10, 100, "a test!", &arial48, BLACK, WHITE);
+    
 
-        // Draw one line
-        printf("%s\n", lyrics[i]);
-        Paint_DrawString_EN(10, 130, lyrics[i], &Font24, WHITE, BLACK);
-        Paint_DrawString_EN(10, 154, lyrics[i+1], &Font24, WHITE, BLACK);
+    display.print(picture.getImage());
+    DisplayApi::delay_ms(3000);
+    display.print(picture2.getImage());
+    picture2.drawString(120, 120, "ailr16", &BebasNeue66, BLACK, WHITE);
+    display.print(picture2.getImage());
 
-        // Do partial refresh in that region
-        EPD_4IN2_V2_Display(BlackImage);
-        if(i == 0){
-            scanf("%c", &dummy);
-        }
-        else if(i == 2){
-            DEV_Delay_ms(1600);
-        }
-        else if(i == 4){
-            DEV_Delay_ms(2800);
-        }
-        //EPD_4IN2_V2_PartialDisplay(BlackImage, 10, 120, 280, 50);
-        
-    }*/
-    testScreen.clearWindow(10, 120, 400, 192, WHITE);
-    //testScreen.drawString(10, 70, "Temperature is:", &Arial80, WHITE, BLACK);
-    //testScreen.drawString(10, 150, "69", &Arial80, WHITE, BLACK);
-
-    //testScreen.drawChar(20, 20, 's', &arial70, BLACK, WHITE);
-    //testScreen.drawChar(20, 80, 's', &arial48, BLACK, WHITE);
-    //testScreen.drawChar(100, 20, 's', &ComicSansMS69, BLACK, WHITE);
-    //testScreen.drawChar(200, 46, 's', &Font24, BLACK, WHITE);
-
-    //testScreen.drawString(20, 160, "abc", &Font24, WHITE, BLACK);
-    testScreen.drawString(1, 1, "ABCDEFGHIJKLMNOPQRsTUVWXYZ0123456789!0123456789!()/&,;.-_%$#@*", &arial48, BLACK, WHITE);
-
-    EPD_4IN2_V2_Display(BlackImage);
-    EPD_4IN2_V2_Sleep();
-    free(BlackImage);
-    DEV_Module_Exit();
-
+    display.sleep();
 
     return 0;
 }
