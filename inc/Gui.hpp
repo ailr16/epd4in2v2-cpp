@@ -54,7 +54,6 @@ namespace Gui {
         void newImage(uint16_t width, uint16_t height, uint16_t rotate, uint16_t color);
         uint8_t* getImage(void);
 
-        void selectImage(void);
         void setRotate(uint16_t rotate);
         void setMirroring(uint8_t mirror);
         void setPixel(uint16_t x_position, uint16_t y_position, uint16_t color);
