@@ -180,6 +180,16 @@ typedef struct {
 } PAINT_TIME;
 extern PAINT_TIME sPaint_time;
 
+/**
+ * Structure for handling a cursor
+**/
+typedef struct {
+    uint16_t x_point;
+    uint16_t y_point;
+    uint16_t last_width;
+    uint16_t last_height;
+} Cursor;
+
 //init and Clear
 void Paint_NewImage(PAINT *Paint, UBYTE *image, UWORD Width, UWORD Height, UWORD Rotate, UWORD Color);
 void Paint_SelectImage(PAINT *Paint, UBYTE *image);
@@ -209,10 +219,10 @@ void Paint_DrawTime(PAINT *Paint, UWORD Xstart, UWORD Ystart, PAINT_TIME *pTime,
 void Paint_DrawBitMap(PAINT *Paint, const unsigned char* image_buffer);
 
 // Adding support for variable-width fonts
-void Paint_DrawChar_VariableWidth(PAINT *Paint, UWORD Xpoint, UWORD Ypoint, const char Ascii_Char,
+Cursor Paint_DrawChar_VariableWidth(PAINT *Paint, UWORD Xpoint, UWORD Ypoint, const char Ascii_Char,
                                   sFONT* Font, UWORD Color_Foreground, UWORD Color_Background);
 
-void Paint_DrawString_VariableWidth(PAINT *Paint, UWORD Xstart, UWORD Ystart, const char *pString,
+Cursor Paint_DrawString_VariableWidth(PAINT *Paint, UWORD Xstart, UWORD Ystart, const char *pString,
                          sFONT* Font, UWORD Color_Foreground, UWORD Color_Background);
 
 
