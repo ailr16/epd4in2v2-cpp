@@ -844,12 +844,14 @@ void Paint_DrawBitMap(PAINT *Paint, const unsigned char* image_buffer)
     }
 }
 
-void Paint_DrawChar_VariableWidth(PAINT *Paint, UWORD Xpoint, UWORD Ypoint, const char Ascii_Char,
+Cursor Paint_DrawChar_VariableWidth(PAINT *Paint, UWORD Xpoint, UWORD Ypoint, const char Ascii_Char,
                                   sFONT* Font, UWORD Color_Foreground, UWORD Color_Background)
 {
+    Cursor cursor = { 0 };
+
     if (Xpoint > Paint->Width || Ypoint > Paint->Height) {
         Debug("Paint_DrawChar Input exceeds the normal display range\r\n");
-        return;
+        return cursor;
     }
 
     /* Compute char offset in the LUT */
@@ -872,7 +874,7 @@ void Paint_DrawChar_VariableWidth(PAINT *Paint, UWORD Xpoint, UWORD Ypoint, cons
             if(current_bit)
                 Paint_SetPixel(Paint, Xpoint + column_counter, Ypoint + line_counter, Color_Foreground);
 
-            /* Break the loop if the widht has been reached */
+            /* Break the loop if the width has been reached */
             if(column_counter == width){
                 column_counter = 0;
                 line_counter++;
@@ -880,14 +882,23 @@ void Paint_DrawChar_VariableWidth(PAINT *Paint, UWORD Xpoint, UWORD Ypoint, cons
             }
         }
     }
+
+    cursor.last_width = width;
+    cursor.last_height = line_counter;
+    cursor.x_point = Xpoint + width;
+    cursor.y_point = Ypoint;
+
+    return cursor;
 }
 
-void Paint_DrawString_VariableWidth(PAINT *Paint, UWORD Xstart, UWORD Ystart, const char* pString,
+Cursor Paint_DrawString_VariableWidth(PAINT *Paint, UWORD Xstart, UWORD Ystart, const char* pString,
                                     sFONT* Font, UWORD Color_Foreground, UWORD Color_Background)
 {
+    Cursor cursor = {0};
+
     if (Xstart > Paint->Width || Ystart > Paint->Height) {
         Debug("Paint_DrawString_EN Input exceeds the normal display range\r\n");
-        return;
+        return cursor;
     }
 
     uint16_t x_offset = 0;
@@ -897,7 +908,7 @@ void Paint_DrawString_VariableWidth(PAINT *Paint, UWORD Xstart, UWORD Ystart, co
         uint32_t char_lut_offset = (*pString - ' ') * 3;
         uint32_t width = Font->lut[char_lut_offset];
 
-        Paint_DrawChar_VariableWidth(Paint,
+        cursor = Paint_DrawChar_VariableWidth(Paint,
                                      Xstart + x_offset,
                                      Ystart + y_offset,
                                      *pString,
@@ -920,41 +931,12 @@ void Paint_DrawString_VariableWidth(PAINT *Paint, UWORD Xstart, UWORD Ystart, co
 
             /* If there's no more room for new lines stop the function */
             if(Ystart + y_offset + Font->Height >= Paint->Height){
-                return;
+                return cursor;
             }
         }
 
         pString++;
     }
 
-    #if 0
-    UWORD Xpoint = Xstart;
-    UWORD Ypoint = Ystart;
-
-    if (Xstart > Paint->Width || Ystart > Paint->Height) {
-        Debug("Paint_DrawString_EN Input exceeds the normal display range\r\n");
-        return;
-    }
-
-    while (* pString != '\0') {
-        //if X direction filled , reposition to(Xstart,Ypoint),Ypoint is Y direction plus the Height of the character
-        if ((Xpoint + Font->Width ) > Paint->Width ) {
-            Xpoint = Xstart;
-            Ypoint += Font->Height;
-        }
-
-        // If the Y direction is full, reposition to(Xstart, Ystart)
-        if ((Ypoint  + Font->Height ) > Paint->Height ) {
-            Xpoint = Xstart;
-            Ypoint = Ystart;
-        }
-        Paint_DrawChar(Paint, Xpoint, Ypoint, * pString, Font, Color_Background, Color_Foreground);
-
-        //The next character of the address
-        pString ++;
-
-        //The next word of the abscissa increases the font of the broadband
-        Xpoint += Font->Width;
-    }
-    #endif
+    return cursor;
 }

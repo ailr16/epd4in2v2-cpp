@@ -43,6 +43,7 @@ add_library(lib__fonts__arial48 clib/Fonts/arial48.c)
 add_library(lib__fonts__arial70 clib/Fonts/arial70.c)
 add_library(lib__fonts__comicSans69 clib/Fonts/ComicSansMS69.c)
 add_library(lib__fonts__BebasNeue66 clib/Fonts/BebasNeue66.c)
+add_library(lib__fonts__Tangerine60 clib/Fonts/Tangerine60.c)
 
 set(clib_fonts
     lib__fonts__font8
@@ -55,6 +56,7 @@ set(clib_fonts
     lib__fonts__arial48
     lib__fonts__arial70
     lib__fonts__BebasNeue66
+    lib__fonts__Tangerine60
 )
 
 # clib for GUI handling
@@ -89,6 +91,20 @@ target_link_libraries(Gui
     ${clib_gui}
 )
 
+add_library(DisplayApi DisplayApi.cpp)
+target_link_libraries(DisplayApi
+    ${clib_epaper}
+    ${clib_config}
+    lgpio
+    m
+)
+target_compile_definitions(DisplayApi
+    PRIVATE
+        USE_LGPIO_LIB
+        RPI
+        DEBUG
+)
+
 add_executable(main main.cpp)
 
 target_link_libraries(main
@@ -97,8 +113,7 @@ target_link_libraries(main
         ${clib_epaper}
         ${clib_fonts}
         Gui
-        lgpio
-        m
+        DisplayApi
 )
 
 target_compile_definitions(main

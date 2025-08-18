@@ -3,6 +3,7 @@
         "dev_config.h": "c",
         "string": "cpp",
         "cstddef": "cpp",
-        "fonts.h": "c"
+        "fonts.h": "c",
+        "epd_4in2_v2.h": "c"
     }
 }

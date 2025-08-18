@@ -1,12 +1,23 @@
 #include "Gui.hpp"
 
 namespace Gui{
-    void Picture::newImage(uint8_t *image, uint16_t width, uint16_t height, uint16_t rotate, uint16_t color){
-        Paint_NewImage(&this->screenHandler, image, width, height, rotate, color);
+    Picture::~Picture(){
+        free(this->image);
     }
 
-    void Picture::selectImage(uint8_t *image){
-        Paint_SelectImage(&this->screenHandler, image);
+    void Picture::newImage(uint16_t width, uint16_t height, uint16_t rotate, uint16_t color){
+        uint16_t image_size = (width / 8U) * height;
+
+        this->image = (uint8_t*)malloc(image_size);
+        if(this->image == NULL) {
+            return;
+        }
+
+        Paint_NewImage(&this->screenHandler, this->image, width, height, rotate, color);
+    }
+
+    uint8_t* Picture::getImage(void){
+        return this->image;
     }
 
     void Picture::setRotate(uint16_t rotate){
@@ -77,7 +88,9 @@ namespace Gui{
                         );
     }
 
-    void Picture::drawChar(uint16_t x_position, uint16_t y_position, const char ascii_char, sFONT* font, uint16_t color_foreground, uint16_t color_background){
+    Cursor Picture::drawChar(uint16_t x_position, uint16_t y_position, const char ascii_char, sFONT* font, uint16_t color_foreground, uint16_t color_background){
+        Cursor cursor = {0};
+
         if(font->lut == nullptr){
             /* Monospaced font */
             Paint_DrawChar(&this->screenHandler,
@@ -88,7 +101,7 @@ namespace Gui{
                            );
         }
         else{
-            Paint_DrawChar_VariableWidth(&this->screenHandler,
+            cursor =  Paint_DrawChar_VariableWidth(&this->screenHandler,
                                          x_position, y_position,
                                          ascii_char,
                                          font,
@@ -96,31 +109,42 @@ namespace Gui{
                                          color_background
                                         );
         }
+
+        return cursor;
     }
 
-    void Picture::drawString(uint16_t x_position, uint16_t y_position, const char * pString, sFONT* font, uint16_t color_foreground, uint16_t color_background){
+    Cursor Picture::drawString(uint16_t x_position, uint16_t y_position, std::string_view pString, sFONT* font, uint16_t color_foreground, uint16_t color_background){
+        Cursor cursor = {0};
+        
         if(font->lut == nullptr){
             /* Monospaced font */
             Paint_DrawString_EN(&this->screenHandler,
                                 x_position, y_position,
-                                pString,
+                                pString.data(),
                                 font,
-                                color_foreground,
-                                color_background
+                                color_background,
+                                color_foreground
                                 );
         }
         else{
-            Paint_DrawString_VariableWidth(&this->screenHandler,
-                                x_position, y_position,
-                                pString,
-                                font,
-                                color_foreground,
-                                color_background
-                                );
+            cursor = Paint_DrawString_VariableWidth(&this->screenHandler,
+                                                    x_position, y_position,
+                                                    pString.data(),
+                                                    font,
+                                                    color_foreground,
+                                                    color_background
+            );
         }
+
+        return cursor;
     }
 
     void Picture::drawFloatNum(uint16_t x_position, uint16_t y_position, double number, sFONT* font, uint16_t digit, uint16_t color_foreground, uint16_t color_background){
+        // Variable-width fonts not supported yet!
+        if(font->lut != nullptr){
+            return;
+        }
+
         Paint_DrawNumDecimals(&this->screenHandler,
                               x_position, y_position,
                               number,
