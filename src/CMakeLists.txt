@@ -91,6 +91,20 @@ target_link_libraries(Gui
     ${clib_gui}
 )
 
+add_library(DisplayApi DisplayApi.cpp)
+target_link_libraries(DisplayApi
+    ${clib_epaper}
+    ${clib_config}
+    lgpio
+    m
+)
+target_compile_definitions(DisplayApi
+    PRIVATE
+        USE_LGPIO_LIB
+        RPI
+        DEBUG
+)
+
 add_executable(main main.cpp)
 
 target_link_libraries(main
@@ -99,8 +113,7 @@ target_link_libraries(main
         ${clib_epaper}
         ${clib_fonts}
         Gui
-        lgpio
-        m
+        DisplayApi
 )
 
 target_compile_definitions(main

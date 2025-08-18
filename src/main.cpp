@@ -1,15 +1,8 @@
-#include <cstdlib>
 #include <csignal>
 #include <cstring>
 
 #include "Gui.hpp"
-
-extern "C"{
-    #include "DEV_Config.h"
-    #include "Debug.h"
-    #include <stdlib.h> // malloc() free()
-    #include "EPD_4in2_V2.h"
-}
+#include "DisplayApi.hpp"
 
 int main(void) {
     uint16_t image_size = (EPD_4IN2_V2_WIDTH / 8U) * EPD_4IN2_V2_HEIGHT;
