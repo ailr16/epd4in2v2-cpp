@@ -1,3 +1,9 @@
+/**
+ * @file    Gui.hpp
+ * @brief   Contains the Gui namespace, bringing interfaces to draw on a picture
+ *
+ */
+
 #ifndef GUI_HPP
 #define GUI_HPP
 
