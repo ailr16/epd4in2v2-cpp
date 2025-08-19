@@ -2,7 +2,7 @@
 
 ## Architecture
 
-![layers architecture](./docs/display_Arch.png)
+![layers architecture](./docs/img/display_Arch.png)
 
 The proposed architecture isolates the low level layers (already provided by waveshare), calling it from a C++ wrapper, solving some logic problems and allowing to add features without touching (or at least, reducing refactors) that low level code.
 
