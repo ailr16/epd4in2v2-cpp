@@ -2,6 +2,22 @@
  * @file    Gui.hpp
  * @brief   Contains the Gui namespace, bringing interfaces to draw on a picture
  *
+ * Features:
+ * - Allocate memory for handling the image specifying width and height
+ * - Retrieve the array with the image and draw in display using the Api
+ * - Rotate and mirror the image
+ * - Set the size of points and image color scale (B/W or 4-gray)
+ * - Clear the entire image or just a window
+ * - Draw primitives (dot, line, rectangle, circle)
+ * - Draw characters and strings with a specific font (monospaced and variable-width)
+ * - Read BMPs
+ * - Handling cursor with last-character drew data and start point for new drawings (ONLY FOR 
+ *   VARIABLE-WIDTH fonts)
+ * 
+ * To Do:
+ * - Add character handling for monospaced fonts
+ * - Add a method to draw non-ASCII characters
+ * - Add support for allocating memory for 4-gray scale image
  */
 
 #ifndef GUI_HPP
@@ -16,7 +32,17 @@ extern "C"{
     #include "GUI_Paint.h"
 }
 
+/**
+ * @namespace Gui
+ * @brief Groups enumerations and the class Picture
+ */
 namespace Gui {
+    /**
+     * @enum DotSize
+     * @brief Size of drawing point
+     *
+     * Consider that the point is a nxn square. Example, DOT6 = 6x6 pixel square
+     */
     enum DotSize : uint8_t {
         DOT_1 = 1,
         DOT_2,
@@ -28,27 +54,47 @@ namespace Gui {
         DOT_8
     };
 
+    /**
+     * @enum DotStyle
+     * @brief  Style of drawing point
+     */
     enum DotStyle : uint8_t {
         FILL_AROUND = 1,
         FILL_RIGHTUP 
     };
 
+    /**
+     * @enum LineStyle
+     * @brief Style of drawing line
+     */
     enum LineStyle : uint8_t {
         SOLID = 1,
         DOTTED
     };
 
+    /**
+     * @enum GeometryFill
+     * @brief Enable/disable filling for drew figures
+     */
     enum GeometryFill : uint8_t {
         VOID,
         FULL
     };
 
+    /**
+     * @enum BmpReadMode
+     * @brief Color scale for reading BMPs
+     */
     enum BmpReadMode : unsigned char {
         MONOCHROME,
         GRAY_4,
         GRAY_16 
     };
 
+    /**
+     * @class Picture
+     * @brief Handles drawing in a picture and retrieving data from it
+     */
     class Picture {
         private:
         PAINT screenHandler;
