@@ -17,8 +17,8 @@ namespace Gui{
     /// @param height 
     /// @param rotate 
     /// @param color 
-    void Picture::newImage(uint16_t width, uint16_t height, uint16_t rotate, uint16_t color){
-        uint16_t image_size = (width / 8U) * height;
+    void Picture::newImage(uint16_t width, uint16_t height, uint16_t rotate, uint16_t color, uint8_t mode){
+        uint16_t image_size = ((width / 8U) * (1 + mode))* height;
 
         this->image = (uint8_t*)malloc(image_size);
         if(this->image == NULL) {
@@ -265,10 +265,6 @@ namespace Gui{
 
             case Gui::BmpReadMode::GRAY_4:
                 opStatus = GUI_ReadBmp_4Gray(&this->screenHandler, path.c_str(), x_start, y_start);
-                break;
-
-            case Gui::BmpReadMode::GRAY_16:
-                opStatus = GUI_ReadBmp_16Gray(&this->screenHandler, path.c_str(), x_start, y_start);
                 break;
                 
             default:

@@ -88,8 +88,5 @@ typedef struct RGB_QUAD {
 
 UBYTE GUI_ReadBmp(PAINT *Paint, const char *path, UWORD Xstart, UWORD Ystart);
 UBYTE GUI_ReadBmp_4Gray(PAINT *Paint, const char *path, UWORD Xstart, UWORD Ystart);
-UBYTE GUI_ReadBmp_16Gray(PAINT *Paint, const char *path, UWORD Xstart, UWORD Ystart);
-UBYTE GUI_ReadBmp_RGB_4Color(PAINT *Paint, const char *path, UWORD Xstart, UWORD Ystart);
-UBYTE GUI_ReadBmp_RGB_6Color(PAINT *Paint, const char *path, UWORD Xstart, UWORD Ystart);
-UBYTE GUI_ReadBmp_RGB_7Color(PAINT *Paint, const char *path, UWORD Xstart, UWORD Ystart);
+
 #endif

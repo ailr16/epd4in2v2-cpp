@@ -86,9 +86,8 @@ namespace Gui {
      * @brief Color scale for reading BMPs
      */
     enum BmpReadMode : unsigned char {
-        MONOCHROME,
-        GRAY_4,
-        GRAY_16 
+        MONOCHROME = 0,
+        GRAY_4 = 1
     };
 
     /**
@@ -104,7 +103,7 @@ namespace Gui {
         Picture(){}
         ~Picture();
 
-        void newImage(uint16_t width, uint16_t height, uint16_t rotate, uint16_t color);
+        void newImage(uint16_t width, uint16_t height, uint16_t rotate, uint16_t color, uint8_t mode);
         uint8_t* getImage(void);
 
         void setRotate(uint16_t rotate);
