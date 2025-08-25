@@ -233,13 +233,14 @@ class Bitmap:
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
+    parser.add_argument("-m", "--mode", type=str, default="", help="script mode")
     parser.add_argument("-bf", "--base_file", type=str, default="", help="bmp base")
     parser.add_argument("-if", "--input_file", type=str, default="", help="bmp input")
     parser.add_argument("-of", "--output_file", type=str, default="", help="bmp output")
 
     args = parser.parse_args()
 
-    if args.base_file == "":
+    if args.mode == "":
         print("Invalid file name!")
         sys.exit()
 
@@ -247,49 +248,46 @@ if __name__ == "__main__":
         print("Invalid file name!")
         sys.exit()
 
-    if args.output_file == "":
-        print("Invalid file name!")
-        sys.exit()
 
-    img_base = open(args.base_file, "rb")
-    #img_input = open(args.input_file, "rb")
-    #img_output = open(args.output_file, "wb")
-    
-    data1 = img_base.read()
-    #data2 = img_input.read()
-        
-    bmp1 = Bitmap(data1)
-    #bmp2 = Bitmap(data2)
-    #bmp3 = Bitmap(data2)
+    img_input = open(args.input_file, "rb")
+    input_data = img_input.read()
+    input_bmp = Bitmap(input_data)
 
-    print("==Header1:")
-    bmp1.header.print(PrintMode.HEX)
-    print("--------")
-    print("==Info Header1:")
-    bmp1.info_header.print(PrintMode.HEX)
-    print("--------")
-    print("==Color table1:")
-    bmp1.color_table.print(PrintMode.HEX)
-    print("--------")
+    # Script in conversion mode requires base bitmap and output filename
+    if args.mode == "c":
+        if args.base_file == "":
+            print("Invalid file name!")
+            sys.exit()
 
-"""
-    bmp3.info_header.colors = bmp1.info_header.colors
-    bmp3.info_header.important_color = bmp1.info_header.important_color
-    bmp3.color_table.table = bmp1.color_table.table
+        if args.output_file == "":
+            print("Invalid file name!")
+            sys.exit()
 
-    print("==Header3:")
-    bmp3.header.print(PrintMode.HEX)
-    print("--------")
-    print("==Info Header3:")
-    bmp3.info_header.print(PrintMode.HEX)
-    print("--------")
-    print("==Color table3:")
-    bmp3.color_table.print(PrintMode.HEX)
-    print("--------")
+        img_base = open(args.base_file, "rb")
+        img_output = open(args.output_file, "wb")
 
-    img_output.write(bmp3.to_bytes())
+        base_data = img_base.read()
 
-    img_base.close()
+        base_bmp = Bitmap(base_data)
+        output_bmp = Bitmap(input_data)
+
+        output_bmp.info_header.colors = base_bmp.info_header.colors
+        output_bmp.info_header.important_color = base_bmp.info_header.important_color
+        output_bmp.color_table.table = base_bmp.color_table.table
+
+        img_output.write(output_bmp.to_bytes())
+
+        img_base.close()
+        img_output.close()
+
+    # Script in analyze mode just requires input bitmap
+    if args.mode == "a":
+        print(8*"-" + "Header:" + 8*"-")
+        input_bmp.header.print(PrintMode.HEX)
+        print(8*"-" + "Info Header:" + 8*"-")
+        input_bmp.info_header.print(PrintMode.HEX)
+        print(8*"-" + "Color table:" + 8*"-")
+        input_bmp.color_table.print(PrintMode.HEX)
+
     img_input.close()
-    img_output.close()
-""" 
+    
